@@ -1,10 +1,18 @@
 import express from "express";
+import helmet from "helmet";
 import taskRoutes from "./routes/taskRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 const PORT = 3000;
 
+app.use(helmet());
+app.disable("x-powered-by");
+
 app.use(express.json());
+
+// auth routes
+app.use("/auth", authRoutes);
 
 // main route
 app.get("/", (req, res) => {
