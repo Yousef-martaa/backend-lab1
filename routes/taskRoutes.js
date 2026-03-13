@@ -8,6 +8,7 @@ import {
 } from "../controllers/taskController.js";
 import { verifyAPIKey } from "../middleware/verifyAPIKey.js";
 import { verifyJWT } from "../middleware/verifyJWT.js";
+import { createTask } from "../models/taskModel.js";
 
 const router = express.Router();
 
@@ -29,5 +30,16 @@ router.put("/:id", updateTaskController);
 
 router.delete("/:id", deleteTaskController);
 
+
+// Protected task
+router.post("/protected-task", verifyJWT, async (req, res) => {
+
+    const { title } = req.body;
+
+    await createTask(title);
+
+    res.json({ message: "Protected task created" });
+
+});
 
 export default router;

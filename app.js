@@ -55,6 +55,7 @@ app.get("/friday", (req, res) => {
 
 });
 
+
 // Show all tasks
 app.get("/tasks", async (req, res) => {
     const tasks = await getAllTasks();
@@ -63,6 +64,8 @@ app.get("/tasks", async (req, res) => {
         message: req.flash("message")
     });
 });
+
+app.use("/tasks", taskRoutes);
 
 // Create task page
 app.get("/tasks/new", (req, res) => {
@@ -97,12 +100,7 @@ app.post("/tasks/update/:id", async (req, res) => {
     res.redirect("/tasks");
 });
 
-// View single task
-app.get("/tasks/:id", async (req, res) => {
-    const id = req.params.id;
-    const task = await getTaskById(id);
-    res.render("task", { task });
-});
+
 
 // Delete task
 app.get("/tasks/delete/:id", async (req, res) => {
@@ -118,9 +116,16 @@ app.get("/tasks/delete/:id", async (req, res) => {
 });
 
 // API routes (Lab1 + Lab2)
-app.use("/tasks", taskRoutes);
+
+// View single task
+app.get("/tasks/:id", async (req, res) => {
+    const id = req.params.id;
+    const task = await getTaskById(id);
+    res.render("task", { task });
+});
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    console.log(`Access the app at http://localhost:${PORT}`);
 });
 
